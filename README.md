@@ -119,7 +119,7 @@ for i in ${MYNODES[@]}; do
 done
 }
 ```
-> We can change C,L,OU,ST to whatever we need.
+> Change C,L,OU,ST to fit your desire.
 ##### Copy the certificates to etcd nodes acordingly
 ```
 {
