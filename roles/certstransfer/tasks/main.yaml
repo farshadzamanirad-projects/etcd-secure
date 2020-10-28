@@ -1,0 +1,17 @@
+- name: Creates /etc/etcd/pki directory
+  file:
+    path: /etc/etcd/pki
+    state: directory
+    
+- name: copy certs to servers!
+  copy:
+    src: tmp/{{ sethostnameto }}.pem
+    dest: /etc/etcd/pki/etcd.pem
+- name: copy certs key to servers
+  copy:
+    src: tmp/{{ sethostnameto }}-key.pem
+    dest: /etc/etcd/pki/etcd-key.pem
+- name: copy ca to servers
+  copy:
+    src: tmp/ca.pem
+    dest: /etc/etcd/pki/ca.pem

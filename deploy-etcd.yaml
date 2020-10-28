@@ -1,0 +1,27 @@
+---
+- hosts: localhost
+  connection: local
+  roles:
+    - infra
+
+- hosts: etcd1
+  gather_facts: yes
+  roles:
+    - ca
+
+- hosts: all
+  gather_facts: yes
+  roles:
+    - certstransfer
+
+- hosts: all
+  gather_facts: yes
+  roles:
+    - prereq
+    - getetcd
+    - etcdinstallation
+
+- hosts: localhost
+  connection: local
+  roles:
+    - removelocalfiles

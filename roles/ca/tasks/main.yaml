@@ -1,0 +1,80 @@
+- name: fetch the latest version from github!
+  shell: |
+    curl --silent "https://api.github.com/repos/cloudflare/cfssl/releases/latest" | grep '"tag_name"' | sed -E 's/.*"([^"]+)".*/\1/'
+  register: cfssl_version
+
+- name: fetch the latest version from github!
+  shell: |
+    curl --silent "https://api.github.com/repos/cloudflare/cfssl/releases/latest" | grep '"tag_name"' | sed -E 's/.*"([^"]+)".*/\1/' | cut -d 'v' -f2
+  register: cfssl_versionnumber
+
+- name: Download cfssl
+  get_url:
+    url: https://github.com/cloudflare/cfssl/releases/download/{{ cfssl_version.stdout }}/cfssl_{{ cfssl_versionnumber.stdout }}_linux_amd64
+    dest: /usr/local/bin/cfssl
+    mode: '0755'
+
+- name: Download cfssljson
+  get_url:
+    url: https://github.com/cloudflare/cfssl/releases/download/{{ cfssl_version.stdout }}/cfssljson_{{ cfssl_versionnumber.stdout }}_linux_amd64
+    dest: /usr/local/bin/cfssljson
+    mode: '0755'
+
+- name: Create a directory if it does not exist
+  file:
+    path: /etc/cryptos
+    state: directory
+    mode: '0755'
+
+- name: copy ca-config.json to remote
+  copy:
+    src: ca-config.json
+    dest: /etc/cryptos/
+    mode: '0644'
+
+- name: put template in the place!
+  template:
+    src: ca-csr.json.j2
+    dest: /etc/cryptos/ca-csr.json
+    mode: '0644'
+
+- name: put template in the place!
+  template:
+    src: etcd-csr.json.j2
+    dest: /etc/cryptos/etcd-csr.json
+    mode: '0644'
+
+- name: creating Cetificate Authority!
+  shell: |
+    cd /etc/cryptos && cfssl gencert -initca ca-csr.json | cfssljson -bare ca
+
+- name: create TLS certs 
+  shell: |
+    cd /etc/cryptos && cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=etcd etcd-csr.json | cfssljson -bare {{ item }}
+  loop:
+    - "{{ hostvars['etcd1'].sethostnameto }}"
+    - "{{ hostvars['etcd2'].sethostnameto }}"
+    - "{{ hostvars['etcd3'].sethostnameto }}"
+
+- name: find files to copy
+  find: 
+    paths: "/etc/cryptos/"
+    recurse: no 
+    patterns: "etcd*.pem"
+  register: files_to_copy
+
+- name: fetch cert files
+  fetch: 
+    src: "{{ item.path }}"
+    dest: tmp/
+    flat: yes
+  with_items: 
+    - "{{ files_to_copy.files }}"
+
+- name: fetch ca file!
+  fetch: 
+    src: /etc/cryptos/ca.pem
+    dest: tmp/
+    flat: yes
+
+

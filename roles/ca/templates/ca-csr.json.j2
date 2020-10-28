@@ -1,0 +1,17 @@
+#jinja2: trim_blocks:False
+{
+  "CN": "etcd cluster",
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names": [
+    {
+      "C": "{{ hostvars['etcd1'].countryinit }}",
+      "L": "{{ hostvars['etcd1'].country }}",
+      "O": "{{ hostvars['etcd1'].company }}",
+      "OU": "{{ hostvars['etcd1'].team }}",
+      "ST": "{{ hostvars['etcd1'].state }}"
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+- name: destroy exisiting vagrants
+  shell: vagrant destroy -f
+
+- name: fireup vagrants
+  shell: vagrant up

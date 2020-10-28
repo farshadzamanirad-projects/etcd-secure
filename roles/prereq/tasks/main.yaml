@@ -1,0 +1,11 @@
+- name: set a proper hostname
+  hostname:
+    name: "{{ sethostnameto }}"
+
+- set_fact:
+    srvhosts: "{{ lookup('template', 'hosts.j2') }}"
+
+- blockinfile:
+    dest: /etc/hosts
+    content: '{{ srvhosts }}'
+    state: present

@@ -1,0 +1,31 @@
+- name: fetch the latest version from github!(Tricky part :P)
+  shell: |
+    git ls-remote --tags https://github.com/etcd-io/etcd/ | sort -t '/' -k 3 -V | grep -v "\^{}" | tail -1 | awk -F/ '{print $3}'
+  register: etcd_version
+
+- name: download the etcd tar file and unarchive it
+  unarchive:
+    src: "https://github.com/etcd-io/etcd/releases/download/{{ etcd_version.stdout }}/etcd-{{ etcd_version.stdout }}-linux-amd64.tar.gz"
+    dest: /tmp/
+    remote_src: yes
+    
+- name: register etcd and etcdctl files
+  find:
+    paths: "/tmp/etcd-{{ etcd_version.stdout }}-linux-amd64/"
+    recurse: no
+    patterns: "etcd*"
+  register: files_to_copy
+   
+- name: copy etcd,etcdctl file to /usr/local/bin/
+  copy:
+    remote_src: yes
+    src: "{{ item.path }}"
+    dest: /usr/local/bin/
+    mode: 0755
+  with_items:
+    - "{{ files_to_copy.files }}"
+    
+- name: remove old folder
+  file:
+    path: /tmp/etcd-v3.4.13-linux-amd64/
+    state: absent

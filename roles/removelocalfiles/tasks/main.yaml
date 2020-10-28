@@ -1,0 +1,4 @@
+- name: remove what created
+  file:
+    path: tmp/
+    state: absent

@@ -1,0 +1,9 @@
+#jinja2: trim_blocks:False
+{% for i in groups.keys() -%}
+  {% if i not in 'all' %}
+    {%- for j in groups[i] -%}
+{{ hostvars[j].ansible_host }}      {{ hostvars[j].sethostnameto }}
+{{''}}
+    {%- endfor -%}
+  {%- endif -%}
+{%- endfor -%}
