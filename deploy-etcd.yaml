@@ -3,8 +3,8 @@
   connection: local
   roles:
     - infra
-    
-- hosts: etcd_cluster
+
+- hosts: all
   gather_facts: yes
   roles:
     - prereq
