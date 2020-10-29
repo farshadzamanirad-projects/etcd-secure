@@ -3,6 +3,11 @@
   connection: local
   roles:
     - infra
+    
+- hosts: etcd_cluster
+  gather_facts: yes
+  roles:
+    - prereq
 
 - hosts: etcd1
   gather_facts: yes
@@ -13,7 +18,6 @@
   gather_facts: yes
   roles:
     - certstransfer
-    - prereq
     - getetcd
     - etcdinstallation
 
