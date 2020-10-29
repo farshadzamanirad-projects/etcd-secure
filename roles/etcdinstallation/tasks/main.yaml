@@ -8,7 +8,7 @@
   systemd:
     daemon_reload: yes
 
-- name: Enable service httpd and ensure it is not masked
+- name: Enable service etcd and ensure it is not masked
   systemd:
     name: etcd
     state: started

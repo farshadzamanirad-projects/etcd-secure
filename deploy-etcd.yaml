@@ -9,14 +9,10 @@
   roles:
     - ca
 
-- hosts: all
+- hosts: etcd_cluster
   gather_facts: yes
   roles:
     - certstransfer
-
-- hosts: all
-  gather_facts: yes
-  roles:
     - prereq
     - getetcd
     - etcdinstallation
