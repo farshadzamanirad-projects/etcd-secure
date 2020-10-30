@@ -51,10 +51,7 @@
 - name: create TLS certs 
   shell: |
     cd /etc/cryptos && cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=etcd etcd-csr.json | cfssljson -bare {{ item }}
-  loop:
-    - "{{ hostvars['etcd1'].sethostnameto }}"
-    - "{{ hostvars['etcd2'].sethostnameto }}"
-    - "{{ hostvars['etcd3'].sethostnameto }}"
+  loop: "{{ query('inventory_hostnames', 'etcd_cluster') | map('extract', hostvars, 'sethostnameto') }}"
 
 - name: find files to copy
   find: 

@@ -5,12 +5,12 @@ Description=etcd
 Type=notify
 ExecStart=/usr/local/bin/etcd \
   --name {{ sethostnameto }} \
-  --cert-file=/etc/etcd/pki/etcd.pem \ 
+  --cert-file=/etc/etcd/pki/etcd.pem \
   --key-file=/etc/etcd/pki/etcd-key.pem \
-  --peer-cert-file=/etc/etcd/pki/etcd.pem \ 
-  --peer-key-file=/etc/etcd/pki/etcd-key.pem \ 
+  --peer-cert-file=/etc/etcd/pki/etcd.pem \
+  --peer-key-file=/etc/etcd/pki/etcd-key.pem \
   --trusted-ca-file=/etc/etcd/pki/ca.pem \
-  --peer-trusted-ca-file=/etc/etcd/pki/ca.pem \ 
+  --peer-trusted-ca-file=/etc/etcd/pki/ca.pem \
   --peer-client-cert-auth \
   --client-cert-auth \
   --initial-advertise-peer-urls https://{{ ansible_host }}:2380 \
@@ -18,14 +18,8 @@ ExecStart=/usr/local/bin/etcd \
   --advertise-client-urls https://{{ ansible_host }}:2379 \
   --listen-client-urls https://{{ ansible_host }}:2379,https://127.0.0.1:2379 \
   --initial-cluster-token etcd-cluster-1 \
-  --initial-cluster{{' '}}
-  {%- for i in groups.keys() -%}
-    {%- if i not in 'all' -%}
-      {%- for j in groups[i] -%} 
-        {{ hostvars[j].sethostnameto }}=https://{{ hostvars[j].ansible_host }}:2380 {%- if not loop.last -%},{%- endif -%}
-      {%- endfor -%}
-    {%- endif -%}
-{%- endfor -%} --initial-cluster-state new 
+  --initial-cluster {{ hostvars['etcd1'].sethostnameto }}=https://{{ hostvars['etcd1'].ansible_host }}:2380,{{ hostvars['etcd2'].sethostnameto }}=https://{{ hostvars['etcd2'].ansible_host }}:2380,{{ hostvars['etcd3'].sethostnameto }}=https://{{ hostvars['etcd3'].ansible_host }}:2380 \
+  --initial-cluster-state new
 Restart=on-failure
 RestartSec=5
 

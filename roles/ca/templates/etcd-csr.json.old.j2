@@ -4,13 +4,9 @@
   "hosts": [
     "localhost",
     "127.0.0.1",
-{%- for i in groups.keys() -%}
-  {%- if i not in 'all' -%}
-    {%- for j in groups[i] %} 
-    "{{ hostvars[j].ansible_host }}"{%- if not loop.last -%},{%- endif -%}
-    {%- endfor -%}
-  {%- endif -%}
-{%- endfor %}
+    "{{ hostvars['etcd1'].ansible_host }}",
+    "{{ hostvars['etcd2'].ansible_host }}",
+    "{{ hostvars['etcd3'].ansible_host }}"
   ],
   "key": {
     "algo": "rsa",

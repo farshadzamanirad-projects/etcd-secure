@@ -1,4 +1,4 @@
 [etcd_cluster]
-etcd1 ansible_host=192.168.56.111 ansible_user=root ansible_password=123 sethostnameto=etcd01.gwf.me country=Germany countryinit=DE company=myfirm team=devops state=Muenchen  
-etcd2 ansible_host=192.168.56.112 ansible_user=root ansible_password=123 sethostnameto=etcd02.gwf.me
-etcd3 ansible_host=192.168.56.113 ansible_user=root ansible_password=123 sethostnameto=etcd03.gwf.me
+etcd1 ansible_host=192.168.56.111 ansible_user=root ansible_password=123 sethostnameto=etcd01 country=Germany countryinit=DE company=myfirm team=devops state=Muenchen  
+etcd2 ansible_host=192.168.56.112 ansible_user=root ansible_password=123 sethostnameto=etcd02
+etcd3 ansible_host=192.168.56.113 ansible_user=root ansible_password=123 sethostnameto=etcd03

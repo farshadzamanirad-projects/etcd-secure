@@ -3,3 +3,8 @@
 
 - name: fireup vagrants
   shell: vagrant up
+
+- name: remove tmp dir
+  file:
+    path: tmp
+    state: absent
