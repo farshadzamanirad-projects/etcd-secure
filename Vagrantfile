@@ -4,7 +4,7 @@ Vagrant.configure(2) do |config|
 
   config.vm.provision "shell", path: "initializer.sh"
 
-  NodeCount = 4
+  NodeCount = 3
 
   (1..NodeCount).each do |i|
     config.vm.define "etcd#{i}" do |etcdnode|
