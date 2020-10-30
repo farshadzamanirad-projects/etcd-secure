@@ -22,7 +22,7 @@
 
 - name: Create a directory if it does not exist
   file:
-    path: /etc/cryptos
+    path: /etc/cryptos/certs
     state: directory
     mode: '0755'
 
@@ -50,14 +50,14 @@
 
 - name: create TLS certs 
   shell: |
-    cd /etc/cryptos && cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=etcd etcd-csr.json | cfssljson -bare {{ item }}
+    cd /etc/cryptos/certs && cfssl gencert -ca=../ca.pem -ca-key=../ca-key.pem -config=../ca-config.json -profile=etcd ../etcd-csr.json | cfssljson -bare {{ item }}
   loop: "{{ query('inventory_hostnames', 'etcd_cluster') | map('extract', hostvars, 'sethostnameto') }}"
 
 - name: find files to copy
   find: 
-    paths: "/etc/cryptos/"
+    paths: "/etc/cryptos/certs"
     recurse: no 
-    patterns: "etcd*.pem"
+    patterns: "*.pem"
   register: files_to_copy
 
 - name: fetch cert files
