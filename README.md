@@ -113,7 +113,7 @@ cat > etcd-csr.json <<EOF
 }
 EOF
 
-declare -a MYNODES=(etcd1 etcd2 etcd3)
+declare -a MYNODES=(etcd01 etcd02 etcd03)
 for i in ${MYNODES[@]}; do
   cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=etcd etcd-csr.json | cfssljson -bare $i
 done
@@ -124,7 +124,7 @@ done
 ```
 {
   for i in {1..3}; do
-    scp ca.pem etcd$i.pem etcd$i-key.pem root@192.168.56.11$i:~/
+    scp ca.pem etcd0$i.pem etcd0$i-key.pem root@192.168.56.11$i:~/
   done
 }
 ```
@@ -133,7 +133,7 @@ done
 > Perform all commands logged in as **root** / **sudo** user
 ```
 {
-  MYFILENAME=etcd`hostname -i | cut -d. -f4 | sed 's/\(.\{1\}\)/\1,/g' | awk -F "," '{print $(NF-1)}'` 
+  MYFILENAME=etcd0`hostname -i | cut -d. -f4 | sed 's/\(.\{1\}\)/\1,/g' | awk -F "," '{print $(NF-1)}'` 
   mkdir -p /etc/etcd/pki
   mv ca.pem /etc/etcd/pki/ca.pem
   mv $MYFILENAME.pem /etc/etcd/pki/etcd.pem
@@ -178,7 +178,7 @@ ExecStart=/usr/local/bin/etcd \\
   --advertise-client-urls http://${NODE_IP}:2379 \\
   --listen-client-urls http://${NODE_IP}:2379,http://127.0.0.1:2379 \\
   --initial-cluster-token etcd-cluster-1 \\
-  --initial-cluster etcd1=http://192.168.56.111:2380,etcd2=http://192.168.56.112:2380,etcd3=http://192.168.56.113:2380 \\
+  --initial-cluster etcd01=http://192.168.56.111:2380,etcd02=http://192.168.56.112:2380,etcd03=http://192.168.56.113:2380 \\
   --initial-cluster-state new
 Restart=on-failure
 RestartSec=5
