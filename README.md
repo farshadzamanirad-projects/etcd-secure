@@ -133,7 +133,7 @@ done
 > Perform all commands logged in as **root** / **sudo** user
 ```
 {
-  MYFILENAME=etcd`hostname -i | cut -d. -f4 | sed 's/\(.\{1\}\)/\1,/g' | grep -o '[^,]*$'` 
+  MYFILENAME=etcd`hostname -i | cut -d. -f4 | sed 's/\(.\{1\}\)/\1 /g' | grep -o '[^ ]*$'` 
   mkdir -p /etc/etcd/pki
   mv ca.pem /etc/etcd/pki/ca.pem
   mv $MYFILENAME.pem /etc/etcd/pki/etcd.pem
