@@ -133,7 +133,7 @@ done
 > Perform all commands logged in as **root** / **sudo** user
 ```
 {
-  MYFILENAME=etcd`hostname -i | cut -d. -f4 | cut -d1 -f 3` #This will create name based on our last digit of our last octet of current machine
+  MYFILENAME=etcd`hostname -i | cut -d. -f4 | cut -d1 -f 3` 
   mkdir -p /etc/etcd/pki
   mv ca.pem /etc/etcd/pki/ca.pem
   mv $MYFILENAME.pem /etc/etcd/pki/etcd.pem
