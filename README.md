@@ -197,21 +197,15 @@ EOF
 ```
 
 #### Verify ETCD cluster status
-> Below command could be issued on any server of our cluster
-```
-ETCDCTL_API=3 etcdctl \
-  --endpoints=https://127.0.0.1:2379 \
-  --cacert=/etc/etcd/pki/ca.pem \
-  --cert=/etc/etcd/pki/etcd.pem \
-  --key=/etc/etcd/pki/etcd-key.pem \
-  member list
-```
-#### Create and verify some key-value pair
-
 ```
 alias etcdctls='etcdctl --endpoints=https://127.0.0.1:2379 --cacert=/etc/etcd/pki/ca.pem --cert=/etc/etcd/pki/etcd.pem --key=/etc/etcd/pki/etcd-key.pem'
 ```
 > To avoid typing ssl options for etcdctl each time we can simply make an alias for that (there are many ways for that as you may already know!)
+> Below command could be issued on any node of our cluster
+```
+ETCDCTL_API=3 etcdctls member list
+```
+#### Create and verify some key-value pair
 ```
 ETCDCTL_API=3 etcdctls put name1 Arash
 ETCDCTL_API=3 etcdctls put name2 Giti
