@@ -217,12 +217,12 @@ now we can check it like below :
 ```
 ETCDCTL_API=3 etcdctls get name3
 ```
->the value of key:name3 should be the output
+> #the value of key:name3 should be the output
 ```
 ETCDCTL_API=3 etcdctls get name1 name4
 ```
->lists range name1 to name 4
+> #lists range name1 to name 4
 ```
 ETCDCTL_API=3 etcdctls get --prefix name 
 ```
->lists all keys with name prefix
+> #lists all keys with name prefix
