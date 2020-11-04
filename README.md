@@ -226,4 +226,3 @@ ETCDCTL_API=3 etcdctls get name1 name4
 ETCDCTL_API=3 etcdctls get --prefix name 
 ```
 >lists all keys with name prefix
-```
